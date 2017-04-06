@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="controller.js"></script>
+    <title>House Management</title>
+</head>
+<body>
+<div ng-app="myApp" ng-controller="housesCtrl">
+    <div style="width: 800px; padding: 20px; margin-bottom: 20px; border-color: black; border-style: solid; border-width: 1px">
+        <div>Додавання нового будинку</div>
+        <input ng-model="newHouse.Address" type="text" placeholder="Адреса"/>
+        <input ng-model="newHouse.Square" type="number" placeholder="Площа"/>
+        <input id="imageInput" type="file" accept="image/*"/>
+        <input type="button" value="Додати" ng-click="AddHouse()"/>
+    </div>
+    <div style="width: 800px; padding: 20px; margin-bottom: 20px; border-color: black; border-style: solid; border-width: 1px">
+        <div>Фільтр</div>
+        <p>Показувати будинки з площею більшою за </p>
+        <input ng-model="minSquare" type="number"/>
+    </div>
+    <table id="container">
+        <tr ng-repeat="x in houseList | square:minSquare">
+            <td width="300">
+                <div ng-hide="isEditable($index)">{{x.Address}}</div>
+                <input ng-show="isEditable($index)" ng-model="x.Address" type="text" value="{{x.Address}}" />
+            </td>
+            <td width="100">
+                <div ng-hide="isEditable($index)">{{x.Square}}</div>
+                <input ng-show="isEditable($index)" ng-model="x.Square" type="number" value="{{x.Square}}" />
+            </td>
+            <td width="300"><img src="{{x.Photo}}" height="150"/></td>
+            <td ng-hide="isEditable($index)"><input type="button" value="Видалити" ng-click="DeleteHouse(x.Id)" /></td>
+            <td ng-hide="isEditable($index)"><input type="button" value="Редагувати" ng-click="changeEditableRow($index)" /></td>
+            <td ng-show="isEditable($index)"><input type="file" accept="image/*" value="Змінити фото" /></td>
+            <td ng-show="isEditable($index)"><input type="button" value="Зберегти зміни" ng-disabled="saveDisabled" ng-click="UpdateHouse()"/></td>
+        </tr>
+    </table>
+</div>
+ 
+</body>
+</html>
